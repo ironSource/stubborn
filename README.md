@@ -18,6 +18,8 @@ var stubborn = new Stubborn(task, options, callback);
 
 stubborn.on('error', onError);
 
+stubborn.run();
+
 function task(callback) {
   if (Math.random() > 0.2) {
     callback('Task error');
