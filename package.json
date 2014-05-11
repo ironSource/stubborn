@@ -22,7 +22,7 @@
   "dependencies": {
     "lodash": "^2.4.1",
     "debug": "^0.8.1",
-    "only-once": "0.0.0",
+    "only-once": "0.0.0"
   },
   "devDependencies": {
     "chai": "^1.9.1"
