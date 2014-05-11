@@ -4,6 +4,7 @@
 ```sh
 npm install stubborn
 ```
+
 ### Example
 ```js
 var Stubborn = require('stubborn');
@@ -38,3 +39,8 @@ function onError(err) {
 }
 
 ```
+
+## Events
+ * run
+ * error
+ * schedule
