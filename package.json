@@ -1,0 +1,30 @@
+{
+  "name": "stubborn",
+  "version": "0.0.0",
+  "description": "Retry engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/grudzinski/stubborn.git"
+  },
+  "keywords": [
+    "retry"
+  ],
+  "author": "Roman Grudzinski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grudzinski/stubborn/issues"
+  },
+  "homepage": "https://github.com/grudzinski/stubborn",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "debug": "^0.8.1",
+    "only-once": "0.0.0",
+  },
+  "devDependencies": {
+    "chai": "^1.9.1"
+  }
+}
