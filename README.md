@@ -10,7 +10,7 @@ npm install stubborn
 var Stubborn = require('stubborn');
 
 var options = {
-  maxAttemps: 5,
+  maxAttempts: 5,
   delay: 1000
 };
 
@@ -46,3 +46,4 @@ function onError(err) {
  * run
  * error
  * schedule
+ * maxAttempts

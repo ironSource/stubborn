@@ -13,7 +13,7 @@ describe('Stubbon', function() {
 	it('constructs with options', function() {
 
 		var testOptions = {
-			maxAttemps: 'testMaxAttemps',
+			maxAttempts: 'testMaxAttempts',
 			delay: 'testDelay',
 			delayProgression: 'testDelayProgression'
 		};
@@ -24,7 +24,7 @@ describe('Stubbon', function() {
 		assert.strictEqual(stubbon._setTimeout, setTimeout);
 		assert.strictEqual(stubbon._task, 'testTask');
 		assert.strictEqual(stubbon._callback, 'testCallback');
-		assert.strictEqual(stubbon._maxAttemps, 'testMaxAttemps');
+		assert.strictEqual(stubbon._maxAttempts, 'testMaxAttempts');
 		assert.strictEqual(stubbon._delay, 'testDelay');
 		assert.strictEqual(stubbon._delayProgression, 'testDelayProgression');
 		assert.strictEqual(stubbon._attempt, 0);
@@ -43,7 +43,7 @@ describe('Stubbon', function() {
 		assert.strictEqual(stubbon._setTimeout, setTimeout);
 		assert.strictEqual(stubbon._task, 'testTask');
 		assert.strictEqual(stubbon._callback, testCallback);
-		assert.strictEqual(stubbon._maxAttemps, 10);
+		assert.strictEqual(stubbon._maxAttempts, 10);
 		assert.strictEqual(stubbon._delay, 100);
 		assert.isUndefined(stubbon._delayProgression);
 		assert.strictEqual(stubbon._attempt, 0);
@@ -188,9 +188,10 @@ describe('Stubbon', function() {
 
 	});
 
-	it('_onTaskExecuted with an error and max attemps reached', function() {
+	it('_onTaskExecuted with an error and max attempts reached', function() {
 
-		var mockEmitCallCount = 0;
+		var mockEmitErrorCallCount = 0;
+		var mockEmitMaxAttemptsCallCount = 0;
 		var maxCallbackCallCount = 0;
 
 		var mock = {
@@ -200,31 +201,36 @@ describe('Stubbon', function() {
 			},
 
 			emit: function(type, error) {
-				assert.strictEqual(type, 'error');
-				assert.strictEqual(error, 'testError');
-				mockEmitCallCount++;
+				if (type === 'error') {
+					assert.strictEqual(error, 'testError');
+					mockEmitErrorCallCount++;
+				}
+				else if (type === 'maxAttempts') {
+					assert.strictEqual(error, 'testError');
+					mockEmitMaxAttemptsCallCount++;
+				}
 			},
 
 			_attempt: 1,
 
-			_maxAttemps: 1,
+			_maxAttempts: 1,
 
 			_callback: function(err) {
 				assert(err instanceof Error);
 				assert.strictEqual(err.message, 'Max attempts reached');
 				maxCallbackCallCount++;
 			}
-
 		};
 
 		Stubborn.prototype._onTaskExecuted.call(mock, 'testError');
 
-		assert.strictEqual(mockEmitCallCount, 1);
+		assert.strictEqual(mockEmitErrorCallCount, 1);
+		assert.strictEqual(mockEmitMaxAttemptsCallCount, 1);
 		assert.strictEqual(maxCallbackCallCount, 1);
 
 	});
 
-	it('_onTaskExecuted with an error and max attemps is not reached', function() {
+	it('_onTaskExecuted with an error and max attempts is not reached', function() {
 
 		var mockEmitCallCount = 0;
 		var mockSetTimeoutCallCount = 0;
@@ -247,7 +253,7 @@ describe('Stubbon', function() {
 
 			_attempt: 0,
 
-			_maxAttemps: 1,
+			_maxAttempts: 1,
 
 			_delay: 'testDelay',
 
