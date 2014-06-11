@@ -46,4 +46,3 @@ function onError(err) {
  * run
  * error
  * schedule
- * maxAttempts
