@@ -1,6 +1,6 @@
 {
   "name": "stubborn",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Retry engine",
   "main": "index.js",
   "scripts": {
