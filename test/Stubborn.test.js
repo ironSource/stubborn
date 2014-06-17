@@ -176,13 +176,13 @@ describe('Stubbon', function() {
 			},
 
 			_callback: function(err) {
-				assert.strictEqual(err, null);
+				assert.deepEqual(_.toArray(arguments), [null, 'testArgA', 'testArgB']);
 				mockCallbackCallCount++;
 			}
 
 		};
 
-		Stubborn.prototype._onTaskExecuted.call(mock, null);
+		Stubborn.prototype._onTaskExecuted.call(mock, null, 'testArgA', 'testArgB');
 
 		assert.strictEqual(mockCallbackCallCount, 1);
 
