@@ -16,7 +16,7 @@ var options = {
 
 var stubborn = new Stubborn(task, options, callback);
 
-stubborn.on('error', onError);
+stubborn.on('attemptError', onAttemptError);
 
 stubborn.run();
 
@@ -36,7 +36,7 @@ function callback(err, result) {
   console.log(result);
 }
 
-function onError(err) {
+function onAttemptError(err) {
   console.error(err);
 }
 
@@ -44,5 +44,5 @@ function onError(err) {
 
 ## Events
  * run
- * error
+ * onAttemptError
  * schedule

@@ -200,7 +200,7 @@ describe('Stubbon', function() {
 			},
 
 			emit: function(type, error) {
-				assert.strictEqual(type, 'error')
+				assert.strictEqual(type, 'attemptError')
 				assert.strictEqual(error, 'testError');
 				mockEmitCallCount++;
 			},
@@ -211,7 +211,7 @@ describe('Stubbon', function() {
 
 			_callback: function(err) {
 				assert(err instanceof Error);
-				assert.strictEqual(err.message, 'Max attempts reached');
+				assert.strictEqual(err.message, 'testError');
 				maxCallbackCallCount++;
 			}
 		};
@@ -236,7 +236,7 @@ describe('Stubbon', function() {
 
 			emit: function(type, error) {
 				if (mockEmitCallCount === 0) {
-					assert.deepEqual(_.toArray(arguments), ['error', 'testError']);
+					assert.deepEqual(_.toArray(arguments), ['attemptError', 'testError']);
 				}
 				if (mockEmitCallCount === 1) {
 					assert.deepEqual(_.toArray(arguments), ['schedule', 'testDelay', 0]);
