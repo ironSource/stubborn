@@ -43,7 +43,7 @@ function onAttemptError(err) {
 ```
 
 ## Methods
- * ```run``` starts specified task
+ * ```run``` starts specified task, call it only once
  * ```cancel``` stops retries
 
 ## Events

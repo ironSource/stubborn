@@ -53,6 +53,32 @@ describe('Stubbon', function() {
 
 	});
 
+	it('run throw exception when run already called', function() {
+
+		var mockDebugCallCount = 0;
+
+		var mock = {
+
+			_debug: function(message) {
+				assert.strictEqual(message, 'run');
+				mockDebugCallCount++;
+			},
+
+			_attempt: 1
+
+		};
+
+		try {
+			Stubborn.prototype.run.call(mock);
+			assert.fail();
+		} catch (e) {
+			assert.strictEqual(e.message, 'Already running');
+		}
+
+		assert.strictEqual(mockDebugCallCount, 1);
+
+	});
+
 	it('run when task does not throw an exception', function() {
 
 		var mockTaskCallCount = 0;
