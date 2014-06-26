@@ -30,6 +30,7 @@ describe('Stubbon', function() {
 		assert.strictEqual(stubbon._attempt, 0);
 		assert.isFunction(stubbon._rerunBound);
 		assert.isFunction(stubbon._onTaskExecutedBound);
+		assert.isFalse(stubbon._canceled);
 
 	});
 
@@ -143,6 +144,26 @@ describe('Stubbon', function() {
 
 	});
 
+	it('cancel', function() {
+
+		var mockDebugCallCount = 0;
+
+		var mock = {
+
+			_debug: function(message) {
+				assert.strictEqual(message, 'cancel');
+				mockDebugCallCount++;
+			}
+
+		};
+
+		Stubborn.prototype.cancel.call(mock);
+
+		assert.isTrue(mock._canceled);
+		assert.strictEqual(mockDebugCallCount, 1);
+
+	});
+
 	it('_rerun', function() {
 
 		var mockRunCallCount = 0;
@@ -209,15 +230,55 @@ describe('Stubbon', function() {
 
 			_maxAttempts: 1,
 
+			_canceled: false,
+
 			_callback: function(err) {
-				assert(err instanceof Error);
-				assert.strictEqual(err.message, 'testError');
+				assert.strictEqual(err, 'testError');
 				maxCallbackCallCount++;
 			}
 		};
 
 		Stubborn.prototype._onTaskExecuted.call(mock, 'testError');
 
+		assert.strictEqual(mockEmitCallCount, 1);
+		assert.strictEqual(maxCallbackCallCount, 1);
+
+	});
+
+	it('_onTaskExecuted with an error and it in canceled state', function() {
+
+		var mockDebugCallCount = 0;
+		var mockEmitCallCount = 0;
+		var maxCallbackCallCount = 0;
+
+		var mock = {
+
+			_debug: function(message) {
+				assert.strictEqual(message, '_onTaskExecuted');
+				mockDebugCallCount++;
+			},
+
+			emit: function(type, error) {
+				assert.strictEqual(type, 'attemptError')
+				assert.strictEqual(error, 'testError');
+				mockEmitCallCount++;
+			},
+
+			_attempt: 1,
+
+			_maxAttempts: 5,
+
+			_canceled: true,
+
+			_callback: function(err) {
+				assert.strictEqual(err, 'testError');
+				maxCallbackCallCount++;
+			}
+		};
+
+		Stubborn.prototype._onTaskExecuted.call(mock, 'testError');
+
+		assert.strictEqual(mockDebugCallCount, 1);
 		assert.strictEqual(mockEmitCallCount, 1);
 		assert.strictEqual(maxCallbackCallCount, 1);
 
@@ -239,14 +300,14 @@ describe('Stubbon', function() {
 					assert.deepEqual(_.toArray(arguments), ['attemptError', 'testError']);
 				}
 				if (mockEmitCallCount === 1) {
-					assert.deepEqual(_.toArray(arguments), ['schedule', 'testDelay', 0]);
+					assert.deepEqual(_.toArray(arguments), ['schedule', 'testDelay', 5]);
 				}
 				mockEmitCallCount++;
 			},
 
-			_attempt: 0,
+			_attempt: 5,
 
-			_maxAttempts: 1,
+			_maxAttempts: 10,
 
 			_delay: 'testDelay',
 
