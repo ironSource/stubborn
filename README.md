@@ -42,7 +42,11 @@ function onAttemptError(err) {
 
 ```
 
+## Methods
+ * ```run``` starts specified task
+ * ```cancel``` stops retries
+
 ## Events
- * run
- * onAttemptError
- * schedule
+ * ```run```
+ * ```onAttemptError```
+ * ```schedule```
