@@ -41,12 +41,48 @@ function onAttemptError(err) {
 }
 
 ```
+### pluggable retry algorithm
+All retry algorithms are inputed with the current number of attempts, and are required to ouput a number that will be the factor of the delay.
+```js
+var Stubborn = require('stubborn');
 
-## Methods
+var options = {
+  maxAttempts: 5,
+  delay: 1000,
+  retryAlgorithm: Stubborn.exponentialBackoff()
+};
+
+var stubborn = new Stubborn(task, options, callback);
+
+```
+#### implement your own:
+```js
+
+var options = {
+  maxAttempts: 5,
+  delay: 1000,
+  retryAlgorithm: function(attempts) {
+    // delay next execution in options.delay * attempts * 2 
+    // thus in attempt #2 we'll have 1000ms * 2 * 2 = 4 seconds delay
+    return attempts * 2
+  }
+};
+``` 
+#### out of the box algorithms:
+```
+var Stubborn = require('stubborn');
+
+var algo1 = Stubborn.exponentialBackoff(2)       // classic http://en.wikipedia.org/wiki/Exponential_backoff
+var algo2 = Stubborn.simpleExponentialBackoff(2) // same as the above only without the random element
+var algo3 = Stubborn.logarithmicProgression(2)   // logarithmic progression
+var algo4 = Stubborn.linear(1, 0)                // ax+b
+var algo5 = Stubborm.constant(1)                 // constant / fixed progression
+```
+### Methods
  * ```run``` starts specified task, call it only once
  * ```cancel``` stops retries
 
-## Events
+### Events
  * ```run```
  * ```onAttemptError```
  * ```schedule```
