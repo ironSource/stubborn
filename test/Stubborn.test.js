@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var chai = require('chai');
 var events = require('events');
+var constant = require('../lib/constant.js')
 
 var assert = chai.assert;
 
@@ -45,8 +46,8 @@ describe('Stubbon', function() {
 		assert.strictEqual(stubbon._task, 'testTask');
 		assert.strictEqual(stubbon._callback, testCallback);
 		assert.strictEqual(stubbon._maxAttempts, 10);
-		assert.strictEqual(stubbon._delay, 100);
-		assert.isUndefined(stubbon._delayProgression);
+		assert.strictEqual(stubbon._delay, 100);		
+		assert.strictEqual(stubbon._delayProgression.name, 'constant');
 		assert.strictEqual(stubbon._attempt, 0);
 		assert.isFunction(stubbon._rerunBound);
 		assert.isFunction(stubbon._onTaskExecutedBound);
@@ -317,6 +318,8 @@ describe('Stubbon', function() {
 
 		var mock = {
 
+			_delayProgression: constant(1),
+
 			_debug: function() {
 
 			},
@@ -326,7 +329,7 @@ describe('Stubbon', function() {
 					assert.deepEqual(_.toArray(arguments), ['attemptError', 'testError']);
 				}
 				if (mockEmitCallCount === 1) {
-					assert.deepEqual(_.toArray(arguments), ['schedule', 'testDelay', 5]);
+					assert.deepEqual(_.toArray(arguments), ['schedule', 1000, 5]);
 				}
 				mockEmitCallCount++;
 			},
@@ -335,13 +338,13 @@ describe('Stubbon', function() {
 
 			_maxAttempts: 10,
 
-			_delay: 'testDelay',
+			_delay: 1000,
 
 			_rerunBound: 'testRerunBound',
 
 			_setTimeout: function(callback, delay) {
 				assert.strictEqual(callback, 'testRerunBound');
-				assert.strictEqual(delay, 'testDelay');
+				assert.strictEqual(delay, 1000);
 				mockSetTimeoutCallCount++;
 			}
 
