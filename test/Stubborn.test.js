@@ -6,7 +6,6 @@ var constant = require('../lib/constant.js')
 var assert = chai.assert;
 
 var EventEmitter = events.EventEmitter;
-
 var Stubborn = require('../lib/Stubborn.js');
 
 describe('Stubbon', function() {
@@ -15,8 +14,7 @@ describe('Stubbon', function() {
 
 		var testOptions = {
 			maxAttempts: 'testMaxAttempts',
-			delay: 'testDelay',
-			delayProgression: 'testDelayProgression'
+			delay: 'testDelay'
 		};
 
 		var stubbon = new Stubborn('testTask', testOptions, 'testCallback');
@@ -27,7 +25,7 @@ describe('Stubbon', function() {
 		assert.strictEqual(stubbon._callback, 'testCallback');
 		assert.strictEqual(stubbon._maxAttempts, 'testMaxAttempts');
 		assert.strictEqual(stubbon._delay, 'testDelay');
-		assert.strictEqual(stubbon._delayProgression, 'testDelayProgression');
+		assert.strictEqual(stubbon._delayProgression.name, 'constant');
 		assert.strictEqual(stubbon._attempt, 0);
 		assert.isFunction(stubbon._rerunBound);
 		assert.isFunction(stubbon._onTaskExecutedBound);
@@ -54,6 +52,26 @@ describe('Stubbon', function() {
 
 	});
 
+	it('override default retry algorithm by providing a function in the options hash', function() {
+
+		var myRetryAlgorithm = function () {}
+
+		var testCallback = function() {};
+
+		var stubborn = new Stubborn('testTask', { retryAlgorithm: myRetryAlgorithm }, testCallback);
+		
+		assert.strictEqual(stubborn._delayProgression, myRetryAlgorithm)
+	});
+
+	it('override default retry algorithm using a string name of one of the out of box algorithms', function() {
+
+		var testCallback = function() {};
+
+		var stubborn = new Stubborn('testTask', { retryAlgorithm: 'linear' }, testCallback);
+		
+		assert.strictEqual(stubborn._delayProgression.name, 'linear')
+	});
+	
 	it('run throw exception when run already called', function() {
 
 		var mockDebugCallCount = 0;

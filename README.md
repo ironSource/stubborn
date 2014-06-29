@@ -78,6 +78,13 @@ var algo3 = Stubborn.logarithmicProgression(2)   // logarithmic progression
 var algo4 = Stubborn.linear(1, 0)                // ax+b
 var algo5 = Stubborm.constant(1)                 // constant / fixed progression
 ```
+#### configure using names instead of functions
+```js
+var options = {
+  retryAlgorithm: 'linear',
+  retryAlgorithmArgs: [ 1, 0 ]
+}
+```
 ### Methods
  * ```run``` starts specified task, call it only once
  * ```cancel``` stops retries
