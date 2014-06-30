@@ -72,7 +72,7 @@ describe('Stubbon', function() {
 		assert.strictEqual(stubborn._delayProgression.name, 'linear')
 	});
 	
-	it('run throw exception when run already called', function() {
+	it.skip('run throw exception when run already called', function() {
 
 		var mockDebugCallCount = 0;
 
