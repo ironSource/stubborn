@@ -42,7 +42,7 @@ function onAttemptError(err) {
 
 ```
 ### pluggable retry algorithm
-All retry algorithms are inputed with the current number of attempts, and are required to ouput a number that will be the factor of the delay.
+All retry algorithms need the current number of attempts as input. As output, they are expected to produce a number that will be used as a factor of the delay.
 ```js
 var Stubborn = require('stubborn');
 
