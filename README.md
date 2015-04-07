@@ -1,5 +1,7 @@
 ## Stubborn
 
+A retry engine
+
 ### Install
 ```sh
 npm install stubborn
