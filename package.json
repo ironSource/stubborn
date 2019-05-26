@@ -20,9 +20,8 @@
   },
   "homepage": "https://github.com/grudzinski/stubborn",
   "dependencies": {
-    "debug": "^3.1.0",
-    "lodash": "^4.17.11",
-    "only-once": "0.0.0"
+    "debug": "^4.1.1",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "chai": "^1.9.1"
